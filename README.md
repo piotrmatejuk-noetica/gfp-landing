@@ -1,6 +1,6 @@
 # Group Facilitation Program — strona kursu
 
-Podgląd: https://piotrmatejuk-noetica.github.io/gfp-landing/
+Podgląd: https://group-facilitation.pshipnoterapii.com/
 
 Samodzielny plik `index.html` — wszystkie zdjęcia, logotypy i fonty są osadzone
 w środku, więc strona działa bez żadnych zasobów zewnętrznych.
