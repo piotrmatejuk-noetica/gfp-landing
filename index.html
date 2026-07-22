@@ -61,6 +61,45 @@ img{max-width:100%}
 .section--tight{padding-block:clamp(2.6rem,5vw,4rem)}
 .band-warm{background:var(--ground-alt); border-block:1px solid var(--border)}
 .band-plain{background:var(--ground)}
+/* FORMULARZ ZGŁOSZENIOWY */
+.signup-dlg{border:none; padding:0; background:transparent; max-width:640px; width:min(94vw,640px)}
+.signup-dlg::backdrop{background:rgba(10,26,24,.62); backdrop-filter:blur(4px)}
+.signup-box{background:var(--ground); border-radius:20px; overflow:hidden;
+  box-shadow:0 40px 90px -30px rgba(10,26,24,.6); max-height:90vh; display:flex; flex-direction:column}
+.signup-head{background:linear-gradient(148deg,#0e2321 0%,var(--navy) 100%); color:#EAF1EF;
+  padding:1.5rem clamp(1.2rem,4vw,2rem) 1.35rem; position:relative; flex:none}
+.signup-head h3{color:#fff; font-size:clamp(1.25rem,3vw,1.6rem); margin:0; text-wrap:balance}
+.signup-head p{color:#B7C9C4; font-size:.87rem; margin:.5rem 0 0; line-height:1.5}
+.signup-x{position:absolute; top:.85rem; right:.85rem; width:34px; height:34px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.28); background:transparent; color:#EAF1EF; cursor:pointer;
+  font-size:1.05rem; line-height:1; display:flex; align-items:center; justify-content:center}
+.signup-x:hover{background:rgba(255,255,255,.12)}
+.signup-body{padding:clamp(1.2rem,4vw,1.9rem); overflow-y:auto; display:grid; gap:1.15rem}
+.fgrid{display:grid; gap:1.15rem}
+@media(min-width:560px){.fgrid.two{grid-template-columns:1fr 1fr}}
+.f label,.f legend{display:block; font-size:.79rem; font-weight:600; color:var(--ink);
+  margin-bottom:.42rem; letter-spacing:.01em}
+.f .req{color:#B8955A}
+.f input[type=text],.f input[type=email],.f input[type=tel],.f select,.f textarea{
+  width:100%; box-sizing:border-box; font:inherit; font-size:.94rem; color:var(--ink);
+  background:#fff; border:1.5px solid var(--border); border-radius:10px; padding:.62rem .78rem}
+.f textarea{min-height:92px; resize:vertical; line-height:1.55}
+.f input:focus,.f select:focus,.f textarea:focus{outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal)}
+.f fieldset{border:none; padding:0; margin:0}
+.radios{display:flex; gap:.5rem; flex-wrap:wrap}
+.radios label{display:inline-flex; align-items:center; gap:.42rem; margin:0; cursor:pointer;
+  border:1.5px solid var(--border); border-radius:9px; padding:.44rem .85rem; background:#fff;
+  font-weight:500; font-size:.9rem}
+.radios label:has(input:checked){border-color:var(--teal); background:#EAF7F8; color:var(--ink)}
+.radios input{accent-color:var(--teal); margin:0}
+.hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+.signup-foot{display:grid; gap:.8rem; justify-items:stretch}
+.signup-note{font-size:.76rem; color:var(--ink-muted); line-height:1.55}
+.signup-msg{font-size:.9rem; border-radius:10px; padding:.75rem .9rem; display:none; line-height:1.5}
+.signup-msg.err{display:block; background:#fef2f2; color:#a3231f; border:1px solid #fecaca}
+.signup-ok{text-align:center; display:grid; gap:.9rem; justify-items:center; padding:1.4rem .4rem .6rem}
+.signup-ok .tick{width:60px; height:60px; border-radius:50%; border:1.5px solid var(--teal);
+  color:var(--teal); display:flex; align-items:center; justify-content:center; font-size:1.6rem}
 /* GWARANCJA — złoty akcent, ten sam co przy certyfikacie i bonusie 08 */
 .guarantee-card{max-width:64ch; margin-inline:auto; text-align:center;
   background:var(--bone); border:1px solid rgba(184,149,90,.42); border-radius:18px;
@@ -1525,6 +1564,63 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
+
+<dialog class="signup-dlg" id="signupDlg" aria-labelledby="signupTitle">
+  <div class="signup-box">
+    <div class="signup-head">
+      <button type="button" class="signup-x" id="signupClose" aria-label="Zamknij formularz">&times;</button>
+      <h3 id="signupTitle">Zgłoszenie do pierwszej kohorty</h3>
+      <p>Kohorta liczy 12–18 osób. Odezwę się osobiście, żeby sprawdzić, czy kurs jest dla ciebie w tym momencie.</p>
+    </div>
+    <form class="f signup-body" id="signupForm" novalidate>
+      <div class="fgrid two">
+        <div><label for="f_imie">Imię <span class="req">*</span></label>
+          <input type="text" id="f_imie" name="imie" required autocomplete="given-name" maxlength="80"></div>
+        <div><label for="f_nazwisko">Nazwisko <span class="req">*</span></label>
+          <input type="text" id="f_nazwisko" name="nazwisko" required autocomplete="family-name" maxlength="80"></div>
+      </div>
+      <div class="fgrid two">
+        <div><label for="f_email">E-mail <span class="req">*</span></label>
+          <input type="email" id="f_email" name="email" required autocomplete="email" maxlength="160"></div>
+        <div><label for="f_tel">Telefon <span class="req">*</span></label>
+          <input type="tel" id="f_tel" name="telefon" required autocomplete="tel" maxlength="40"></div>
+      </div>
+      <div><label for="f_godz">Preferowane godziny kontaktu</label>
+        <select id="f_godz" name="godziny_kontaktu">
+          <option value="">Dowolne</option>
+          <option value="rano (8:00–12:00)">rano (8:00–12:00)</option>
+          <option value="popołudnie (12:00–17:00)">popołudnie (12:00–17:00)</option>
+          <option value="wieczór (17:00–21:00)">wieczór (17:00–21:00)</option>
+        </select></div>
+      <fieldset><legend>Czy prowadzisz już warsztaty?</legend><div class="radios"><label><input type="radio" name="prowadzi_warsztaty" value="tak"> Tak</label><label><input type="radio" name="prowadzi_warsztaty" value="nie"> Nie</label></div></fieldset>
+      <fieldset><legend>Czy zamierzasz prowadzić warsztaty?</legend><div class="radios"><label><input type="radio" name="zamierza_prowadzic" value="tak"> Tak</label><label><input type="radio" name="zamierza_prowadzic" value="nie"> Nie</label></div></fieldset>
+      <fieldset><legend>Czy masz już pomysł na swój warsztat?</legend><div class="radios"><label><input type="radio" name="ma_pomysl" value="tak" data-reveal="pomyslWrap"> Tak</label><label><input type="radio" name="ma_pomysl" value="nie" data-reveal="pomyslWrap"> Nie</label></div>
+        <div id="pomyslWrap" style="display:none; margin-top:.7rem">
+          <label for="f_opis">Opisz go krótko</label>
+          <textarea id="f_opis" name="opis_pomyslu" maxlength="2000" placeholder="Dla kogo, o czym, w jakiej formie."></textarea>
+        </div>
+      </fieldset>
+      <div><label for="f_zalezy">Na czym Ci najbardziej zależy w tym kursie?</label>
+        <textarea id="f_zalezy" name="zalezy" maxlength="3000"></textarea></div>
+      <div><label for="f_uniknac">Czego pragniesz uniknąć?</label>
+        <textarea id="f_uniknac" name="uniknac" maxlength="3000"></textarea></div>
+      <div class="hp" aria-hidden="true"><label for="f_firma">Firma</label>
+        <input type="text" id="f_firma" name="firma" tabindex="-1" autocomplete="off"></div>
+      <div class="signup-msg" id="signupErr" role="alert"></div>
+      <div class="signup-foot">
+        <button type="submit" class="btn btn--primary btn--block" id="signupSubmit">Wyślij zgłoszenie <span class="arrow">&rarr;</span></button>
+        <p class="signup-note">Dane trafiają wyłącznie do SACRUM i służą kontaktowi w sprawie tego kursu. Nie przekazujemy ich dalej.</p>
+      </div>
+    </form>
+    <div class="signup-ok" id="signupOk" style="display:none">
+      <span class="tick" aria-hidden="true">&#10003;</span>
+      <h3 style="margin:0">Zgłoszenie wysłane</h3>
+      <p style="margin:0; color:var(--ink-mid); max-width:44ch">Odezwę się w ciągu kilku dni roboczych w preferowanych godzinach.</p>
+      <button type="button" class="btn btn--ghost" id="signupDone">Zamknij</button>
+    </div>
+  </div>
+</dialog>
+
 <footer class="foot">
   <div class="wrap foot-in">
     <div class="brand"><span class="brand-mark">SACRUM</span></div>
@@ -1604,6 +1700,78 @@ html{scroll-behavior:smooth}
   }
   ringField(document.getElementById('field'),{accent:'96,206,215',rings:8,n:14});
   ringField(document.getElementById('ring2'),{accent:'63,176,189',rings:6,dots:false});
+
+  // FORMULARZ ZGŁOSZENIOWY
+  (function(){
+    var dlg=document.getElementById('signupDlg');
+    if(!dlg) return;
+    var form=document.getElementById('signupForm'),
+        ok=document.getElementById('signupOk'),
+        err=document.getElementById('signupErr'),
+        btn=document.getElementById('signupSubmit'),
+        ENDPOINT='https://klauzule.tail4676a1.ts.net/matejuk-gateway/gfp-signup';
+
+    function open(){
+      err.className='signup-msg'; err.textContent='';
+      form.style.display=''; ok.style.display='none';
+      if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
+      var first=document.getElementById('f_imie'); if(first) setTimeout(function(){first.focus();},60);
+    }
+    function close(){ if(dlg.close) dlg.close(); else dlg.removeAttribute('open'); }
+
+    // Każde CTA prowadzące do zapisu otwiera formularz.
+    document.querySelectorAll('a.btn').forEach(function(a){
+      var t=(a.textContent||'').toLowerCase();
+      if(t.indexOf('zapisz si')>-1 || t.indexOf('zarezerwuj')>-1 || t.indexOf('wybieram premium')>-1){
+        a.addEventListener('click', function(e){ e.preventDefault(); open(); });
+      }
+    });
+
+    document.getElementById('signupClose').addEventListener('click', close);
+    document.getElementById('signupDone').addEventListener('click', close);
+    dlg.addEventListener('click', function(e){ if(e.target===dlg) close(); });
+
+    // "Mam pomysł: tak" odsłania pole opisu.
+    document.querySelectorAll('input[data-reveal]').forEach(function(r){
+      r.addEventListener('change', function(){
+        var w=document.getElementById(r.getAttribute('data-reveal'));
+        if(w) w.style.display = (r.value==='tak' && r.checked) ? '' : 'none';
+      });
+    });
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      err.className='signup-msg'; err.textContent='';
+      var fd=new FormData(form), data={};
+      fd.forEach(function(v,k){ data[k]=String(v); });
+      ['imie','nazwisko','email','telefon'].forEach(function(k){ data[k]=(data[k]||'').trim(); });
+
+      if(!data.imie||!data.nazwisko||!data.email||!data.telefon){
+        err.className='signup-msg err'; err.textContent='Uzupełnij imię, nazwisko, e-mail i telefon.'; return;
+      }
+      if(!/^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(data.email)){
+        err.className='signup-msg err'; err.textContent='Podaj poprawny adres e-mail.'; return;
+      }
+
+      btn.disabled=true; btn.innerHTML='Wysyłam…';
+      try{
+        var r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+        if(!r.ok){
+          var d=await r.json().catch(function(){return {};});
+          throw new Error(r.status===429
+            ? 'Zbyt wiele zgłoszeń z tego łącza. Spróbuj za godzinę albo napisz na kontakt@psychedelictherapy.pl.'
+            : (d.detail||('Błąd serwera ('+r.status+').')));
+        }
+        form.style.display='none'; ok.style.display='';
+      }catch(ex){
+        err.className='signup-msg err';
+        err.textContent=(ex && ex.message ? ex.message : 'Nie udało się wysłać.')
+          +' Możesz też napisać bezpośrednio na kontakt@psychedelictherapy.pl.';
+      }finally{
+        btn.disabled=false; btn.innerHTML='Wyślij zgłoszenie <span class="arrow">&rarr;</span>';
+      }
+    });
+  })();
 })();
 </script>
 
